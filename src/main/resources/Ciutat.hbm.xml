@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.project.Ciutat" table="Ciutat">
+        <id name="ciutatId" type="long" column="ciutatId">
+            <generator class="native"/>
+        </id>
+        <property name="nom" column="nom" type="string"/>
+        <property name="pais" column="pais" type="string"/>
+        <property name="poblacio" column="poblacio" type="int"/>
+
+        <!-- Costat "One" de la relació 1:N.
+             inverse="true": Ciutat NO és la propietària; la FK (ciutatId)
+             és a la taula Ciutada i la gestiona Ciutada.ciutat.
+             Sense cascade: esborrar una ciutat no esborra els seus ciutadans. -->
+        <set name="ciutadans" inverse="true">
+            <key column="ciutatId"/>
+            <one-to-many class="com.project.Ciutada"/>
+        </set>
+    </class>
+</hibernate-mapping>

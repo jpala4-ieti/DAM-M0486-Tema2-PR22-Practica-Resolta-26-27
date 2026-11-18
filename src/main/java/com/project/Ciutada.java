@@ -1,62 +1,63 @@
 package com.project;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
 
+/**
+ * Ciutada: costat "Many" de la relació 1:N amb Ciutat.
+ * És el costat propietari: la seva taula té la clau forana ciutatId.
+ * El mapeig amb la taula es defineix a Ciutada.hbm.xml.
+ */
 public class Ciutada implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
-    private Long ciutadaId;
+
+    private long ciutadaId;
     private String nom;
     private String cognom;
-    private Integer edat;
+    private int edat;
+
+    // Ciutat a la qual pertany (pot ser null)
     private Ciutat ciutat;
-    private String uuid = UUID.randomUUID().toString();
-    
-    // Constructor buit (obligatori per Hibernate)
+
+    // Constructor buit: obligatori per a Hibernate
     public Ciutada() {}
-    
-    // Constructor amb paràmetres
-    public Ciutada(String nom, String cognom, Integer edat) {
+
+    public Ciutada(String nom, String cognom, int edat) {
         this.nom = nom;
         this.cognom = cognom;
         this.edat = edat;
     }
-    
-    // Getters i Setters
-    public Long getCiutadaId() { return ciutadaId; }
-    public void setCiutadaId(Long ciutadaId) { this.ciutadaId = ciutadaId; }
-    
+
+    public long getCiutadaId() { return ciutadaId; }
+    public void setCiutadaId(long ciutadaId) { this.ciutadaId = ciutadaId; }
+
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-    
+
     public String getCognom() { return cognom; }
     public void setCognom(String cognom) { this.cognom = cognom; }
-    
-    public Integer getEdat() { return edat; }
-    public void setEdat(Integer edat) { this.edat = edat; }
-    
+
+    public int getEdat() { return edat; }
+    public void setEdat(int edat) { this.edat = edat; }
+
     public Ciutat getCiutat() { return ciutat; }
     public void setCiutat(Ciutat ciutat) { this.ciutat = ciutat; }
-    
-    // Mètode toString
-    @Override
-    public String toString() {
-        return ciutadaId + ": " + nom + " " + cognom + " (" + edat + " anys)";
-    }
-    
-    // Equals i hashCode basats en UUID
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Ciutada)) return false;
-        Ciutada ciutada = (Ciutada) o;
-        return Objects.equals(uuid, ciutada.uuid);
+        if (!(o instanceof Ciutada other)) return false;
+        return ciutadaId != 0 && ciutadaId == other.getCiutadaId();
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Ciutada.class.hashCode();
+    }
+
+    // No inclou la ciutat: evita recursió infinita i càrregues lazy inesperades
+    @Override
+    public String toString() {
+        return ciutadaId + ": " + nom + " " + cognom + " (" + edat + " anys)";
     }
 }

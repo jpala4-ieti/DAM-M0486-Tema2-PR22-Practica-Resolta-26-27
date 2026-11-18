@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8.4
     container_name: mysql-hibernate
     environment:
       MYSQL_DATABASE: test-mysql
